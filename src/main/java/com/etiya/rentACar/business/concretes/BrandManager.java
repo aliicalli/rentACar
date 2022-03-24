@@ -50,7 +50,7 @@ public class BrandManager implements BrandService {
 //           throw new RuntimeException("Aynı isimden mevcut") ;
 //       }
 //
-//        if (this.brandDao.existsBrandByName(createBrandRequest.getName())){
+//        if (!this.brandDao.existsBrandByName(createBrandRequest.getName())){
 //            Brand brand = this.modelMapperService.forRequest().map(createBrandRequest,Brand.class);
 //            this.brandDao.save(brand);
 //            }
