@@ -1,9 +1,7 @@
 package com.etiya.rentACar.business.abstracts;
 
 import com.etiya.rentACar.business.requests.damageRequests.CreateDamageRequest;
-import com.etiya.rentACar.business.responses.carResponses.ListCarDto;
 import com.etiya.rentACar.business.responses.damageResponses.ListDamageDto;
-import com.etiya.rentACar.entities.Damage;
 
 import java.util.List;
 

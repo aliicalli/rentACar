@@ -3,17 +3,14 @@ package com.etiya.rentACar.business.concretes;
 
 import com.etiya.rentACar.business.abstracts.DamageService;
 import com.etiya.rentACar.business.requests.damageRequests.CreateDamageRequest;
-import com.etiya.rentACar.business.responses.carResponses.ListCarDto;
 import com.etiya.rentACar.business.responses.damageResponses.ListDamageDto;
 import com.etiya.rentACar.core.utilities.mapping.ModelMapperService;
 import com.etiya.rentACar.dataAccess.abstracts.DamageDao;
-import com.etiya.rentACar.entities.Car;
 import com.etiya.rentACar.entities.Damage;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;

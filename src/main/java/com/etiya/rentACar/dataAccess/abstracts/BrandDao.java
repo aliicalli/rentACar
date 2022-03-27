@@ -9,6 +9,4 @@ import java.util.List;
 @Repository
 public interface BrandDao extends JpaRepository<Brand, Integer> {
     Boolean existsBrandByName(String name);
-
-
 }

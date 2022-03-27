@@ -3,6 +3,7 @@ package com.etiya.rentACar.business.concretes;
 import com.etiya.rentACar.business.abstracts.BrandService;
 import com.etiya.rentACar.business.requests.brandRequests.CreateBrandRequest;
 import com.etiya.rentACar.business.responses.brandResponses.ListBrandDto;
+import com.etiya.rentACar.core.crossCuttingConcerns.exceptionHandling.BusinessException;
 import com.etiya.rentACar.core.utilities.mapping.ModelMapperService;
 import com.etiya.rentACar.dataAccess.abstracts.BrandDao;
 import com.etiya.rentACar.entities.Brand;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.ignoreCase;
@@ -25,21 +27,29 @@ public class BrandManager implements BrandService {
     public BrandManager(BrandDao brandDao, ModelMapperService modelMapperService) {
         this.brandDao = brandDao;
         this.modelMapperService = modelMapperService;
+        //sadf
     }
 
     @Override
     public void add(CreateBrandRequest createBrandRequest) {
+
+        String brandName = createBrandRequest.getName().toLowerCase();
+        checkIfBrandExists(brandName);
+        createBrandRequest.setName(brandName);
+
         Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
-        ExampleMatcher nameMatcher = ExampleMatcher.matching()
-                .withIgnorePaths("id").withMatcher("name", ignoreCase());
-        Example<Brand> example = Example.of(brand, nameMatcher);
-        if (!this.brandDao.exists(example)) {
-            this.brandDao.save(brand);
-        } else {
-            throw new RuntimeException("Aynı isimden mevcut");
-        }
+        this.brandDao.save(brand);
 
-
+//        Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
+//        ExampleMatcher nameMatcher = ExampleMatcher.matching()
+//                .withIgnorePaths("id").withMatcher("name", ignoreCase());
+//        Example<Brand> example = Example.of(brand, nameMatcher);
+//        if (!this.brandDao.exists(example)) {
+//            this.brandDao.save(brand);
+//        } else {
+//            throw new RuntimeException("Aynı isimden mevcut");
+//        }
+//
 //        ExampleMatcher nameMatcher = ExampleMatcher.matching()
 //                .withIgnorePaths("id").withMatcher("name", startsWith()).withIgnoreCase();
 //        Example<Brand> example = Example.of(brand,nameMatcher);
@@ -67,6 +77,16 @@ public class BrandManager implements BrandService {
 
         return response;
     }
+
+    private void checkIfBrandExists(String brandName) {
+
+        if (this.brandDao.existsBrandByName(brandName)) {
+            throw new BusinessException("Bu marka daha önce kullanılmış");
+        }
+
+    }
+
+
 
 
 }

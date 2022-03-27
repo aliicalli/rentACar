@@ -28,8 +28,8 @@ public class CarManager implements CarService {
     @Override
     public void add(CreateCarRequest createCarRequest) {
         Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
-
         this.carDao.save(car);
+
 
     }
 
@@ -37,7 +37,7 @@ public class CarManager implements CarService {
     public List<ListCarDto> getAll() {
         List<Car> cars = this.carDao.findAll();
         List<ListCarDto> response = cars.stream().map(car -> this.modelMapperService.forDto()
-                .map(car,ListCarDto.class))
+                        .map(car, ListCarDto.class))
                 .collect(Collectors.toList());
 
         return response;
@@ -47,7 +47,7 @@ public class CarManager implements CarService {
     public List<ListCarDto> getAllByModelYear(double modelYear) {
         List<Car> cars = this.carDao.getByModelYear(modelYear);
         List<ListCarDto> response = cars.stream().map(car -> this.modelMapperService.forDto()
-                .map(car,ListCarDto.class))
+                        .map(car, ListCarDto.class))
                 .collect(Collectors.toList());
 
         return response;
@@ -56,10 +56,10 @@ public class CarManager implements CarService {
 
     @Override
     public List<ListCarDto> getAllPaged(int pageNo, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo-1,pageSize);
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         List<Car> cars = this.carDao.findAll(pageable).getContent();//content datayı anlatır burada sayfa ile biligilerde olduğu için bunu kullanıyoruz.
         List<ListCarDto> response = cars.stream().map(car -> this.modelMapperService.forDto()
-                .map(car,ListCarDto.class))
+                        .map(car, ListCarDto.class))
                 .collect(Collectors.toList());
 
         return response;
@@ -67,10 +67,10 @@ public class CarManager implements CarService {
 
     @Override
     public List<ListCarDto> getAllSorted() {
-        Sort sort = Sort.by(Sort.Direction.DESC,"modelYear");
+        Sort sort = Sort.by(Sort.Direction.DESC, "modelYear");
         List<Car> cars = this.carDao.findAll(sort);
         List<ListCarDto> response = cars.stream().map(car -> this.modelMapperService.forDto()
-                .map(car,ListCarDto.class))
+                        .map(car, ListCarDto.class))
                 .collect(Collectors.toList());
 
         return response;
