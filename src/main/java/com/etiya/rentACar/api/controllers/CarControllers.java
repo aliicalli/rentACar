@@ -3,7 +3,8 @@ package com.etiya.rentACar.api.controllers;
 
 import com.etiya.rentACar.business.abstracts.CarService;
 import com.etiya.rentACar.business.requests.carRequests.CreateCarRequest;
-import com.etiya.rentACar.business.responses.brandResponses.ListBrandDto;
+import com.etiya.rentACar.business.requests.carRequests.DeleteCarRequest;
+import com.etiya.rentACar.business.requests.carRequests.UpdateCarRequest;
 import com.etiya.rentACar.business.responses.carResponses.ListCarDto;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,16 @@ public class CarControllers {
         carService.add(createCarRequest);
     }
 
+    @PutMapping("/update")
+    public void update(@RequestBody UpdateCarRequest updateCarRequest) {
+        this.carService.update(updateCarRequest);
+    }
+
+    @PostMapping("/delete")
+    public void delete(@RequestBody DeleteCarRequest deleteCarRequest) {
+        this.carService.delete(deleteCarRequest);
+    }
+
     @GetMapping("/getall")
     public List<ListCarDto> getAll() {
         return this.carService.getAll();
@@ -32,12 +43,14 @@ public class CarControllers {
     public List<ListCarDto> getlAllByModelYear(@RequestParam("modelYear") double modelYear) {
         return this.carService.getAllByModelYear(modelYear);
     }
+
     @GetMapping("/getallpaged")
-    List<ListCarDto> getAllPaged(int pageNo,int pageSize){
-            return this.carService.getAllPaged(pageNo,pageSize);
+    List<ListCarDto> getAllPaged(int pageNo, int pageSize) {
+        return this.carService.getAllPaged(pageNo, pageSize);
     }
+
     @GetMapping("/getallsorted")
-    List<ListCarDto> getAllSorted(){
+    List<ListCarDto> getAllSorted() {
         return this.carService.getAllSorted();
 
     }

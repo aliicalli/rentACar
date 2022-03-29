@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface DamageDao  extends JpaRepository<Damage,Integer> {
-    List<Damage> getByCarId(int id);
+    List<Damage> getAllByCarId(int carId);
 }

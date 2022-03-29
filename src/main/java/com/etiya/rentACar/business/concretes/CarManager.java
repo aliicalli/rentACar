@@ -3,6 +3,9 @@ package com.etiya.rentACar.business.concretes;
 
 import com.etiya.rentACar.business.abstracts.CarService;
 import com.etiya.rentACar.business.requests.carRequests.CreateCarRequest;
+import com.etiya.rentACar.business.requests.carRequests.DeleteCarRequest;
+import com.etiya.rentACar.business.requests.carRequests.UpdateCarRequest;
+import com.etiya.rentACar.business.responses.carResponses.CarDto;
 import com.etiya.rentACar.business.responses.carResponses.ListCarDto;
 import com.etiya.rentACar.core.utilities.mapping.ModelMapperService;
 import com.etiya.rentACar.dataAccess.abstracts.CarDao;
@@ -28,16 +31,40 @@ public class CarManager implements CarService {
     @Override
     public void add(CreateCarRequest createCarRequest) {
         Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
-
         this.carDao.save(car);
 
+
+    }
+
+    @Override
+    public void update(UpdateCarRequest updateCarRequest) {
+
+        Car result = this.modelMapperService.forRequest().map(updateCarRequest, Car.class);
+        this.carDao.save(result);
+    }
+
+
+    @Override
+    public void delete(DeleteCarRequest deleteCarRequest) {
+        int carId = deleteCarRequest.getId();
+        this.carDao.deleteById(carId);
+    }
+
+
+    @Override
+    public CarDto getById(int id) {
+        Car result = this.carDao.getById(id);
+
+        CarDto response = this.modelMapperService.forDto().map(result, CarDto.class);
+
+        return response;
     }
 
     @Override
     public List<ListCarDto> getAll() {
         List<Car> cars = this.carDao.findAll();
         List<ListCarDto> response = cars.stream().map(car -> this.modelMapperService.forDto()
-                .map(car,ListCarDto.class))
+                        .map(car, ListCarDto.class))
                 .collect(Collectors.toList());
 
         return response;
@@ -47,7 +74,7 @@ public class CarManager implements CarService {
     public List<ListCarDto> getAllByModelYear(double modelYear) {
         List<Car> cars = this.carDao.getByModelYear(modelYear);
         List<ListCarDto> response = cars.stream().map(car -> this.modelMapperService.forDto()
-                .map(car,ListCarDto.class))
+                        .map(car, ListCarDto.class))
                 .collect(Collectors.toList());
 
         return response;
@@ -56,10 +83,10 @@ public class CarManager implements CarService {
 
     @Override
     public List<ListCarDto> getAllPaged(int pageNo, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo-1,pageSize);
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         List<Car> cars = this.carDao.findAll(pageable).getContent();//content datayı anlatır burada sayfa ile biligilerde olduğu için bunu kullanıyoruz.
         List<ListCarDto> response = cars.stream().map(car -> this.modelMapperService.forDto()
-                .map(car,ListCarDto.class))
+                        .map(car, ListCarDto.class))
                 .collect(Collectors.toList());
 
         return response;
@@ -67,10 +94,10 @@ public class CarManager implements CarService {
 
     @Override
     public List<ListCarDto> getAllSorted() {
-        Sort sort = Sort.by(Sort.Direction.DESC,"modelYear");
+        Sort sort = Sort.by(Sort.Direction.DESC, "modelYear");
         List<Car> cars = this.carDao.findAll(sort);
         List<ListCarDto> response = cars.stream().map(car -> this.modelMapperService.forDto()
-                .map(car,ListCarDto.class))
+                        .map(car, ListCarDto.class))
                 .collect(Collectors.toList());
 
         return response;

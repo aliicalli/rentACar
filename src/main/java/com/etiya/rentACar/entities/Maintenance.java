@@ -11,21 +11,25 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "damages")
-public class Damage {
+@Table(name = "maintenances")
+public class Maintenance {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "date")
-    private LocalDate date;
+    @Column(name = "dateAdded")
+    private LocalDate dateAdded;
+
+    @Column(name = "dateReturned")
+    private LocalDate dateReturned;
 
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
+
 
 }

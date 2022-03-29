@@ -20,8 +20,8 @@ public class Color {
     @Column(name="id")
     private int id;
 
-    @Column(name="colorName")
-    private String colourName;
+    @Column(name="name")
+    private String name;
 
     @OneToMany(mappedBy = "color")
     private List<Car> cars;

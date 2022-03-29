@@ -2,21 +2,17 @@ package com.etiya.rentACar.business.concretes;
 
 import com.etiya.rentACar.business.abstracts.ColorService;
 import com.etiya.rentACar.business.requests.colorRequests.CreateColorRequest;
-import com.etiya.rentACar.business.responses.brandResponses.ListBrandDto;
+import com.etiya.rentACar.business.requests.colorRequests.DeleteColorRequest;
+import com.etiya.rentACar.business.requests.colorRequests.UpdateColorRequest;
 import com.etiya.rentACar.business.responses.colorResponses.ListColorDto;
+import com.etiya.rentACar.core.crossCuttingConcerns.exceptionHandling.BusinessException;
 import com.etiya.rentACar.core.utilities.mapping.ModelMapperService;
 import com.etiya.rentACar.dataAccess.abstracts.ColorDao;
-import com.etiya.rentACar.entities.Brand;
 import com.etiya.rentACar.entities.Color;
-import org.springframework.boot.Banner;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.ignoreCase;
 
 @Service
 public class ColorManager implements ColorService {
@@ -32,25 +28,37 @@ public class ColorManager implements ColorService {
     @Override
     public void add(CreateColorRequest createColorRequest) {
 
-        Color color = this.modelMapperService.forRequest().map(createColorRequest, Color.class);
-        ExampleMatcher nameMatcher = ExampleMatcher.matching()
-                .withIgnorePaths("id").withMatcher("name", ignoreCase());
-        Example<Color> example = Example.of(color, nameMatcher);
-        if (!this.colorDao.exists(example)) {
-            this.colorDao.save(color);
-        } else {
-            throw new RuntimeException("Aynı isimden mevcut");
-        }
+        String colorName = createColorRequest.getName();
+        checkIfColorExists(colorName);
 
+        Color result = this.modelMapperService.forRequest().map(createColorRequest, Color.class);
+        this.colorDao.save(result);
 
     }
 
     @Override
+    public void update(UpdateColorRequest updateColorRequest) {
+        Color result = this.modelMapperService.forRequest().map(updateColorRequest,Color.class);
+        this.colorDao.save(result);
+    }
+
+    @Override
+    public void delete(DeleteColorRequest deleteColorRequest) {
+        int colorId = deleteColorRequest.getId();
+        this.colorDao.deleteById(colorId);
+    }
+
+    @Override
     public List<ListColorDto> getAll() {
-        List<Color> colors = this.colorDao.findAll();
-        List<ListColorDto> response = colors.stream().map(color -> modelMapperService.forDto().map(color, ListColorDto.class)).collect(Collectors.toList());
+        List<Color> results = this.colorDao.findAll();
+        List<ListColorDto> response = results.stream().map(color -> modelMapperService.forDto().map(color, ListColorDto.class)).collect(Collectors.toList());
         return response;
     }
 
+    private void checkIfColorExists(String colorName){
+        if (this.colorDao.existsColorByNameIgnoreCase(colorName)) {
+            throw new BusinessException("Bu Renk daha önce kullanılmış");
+        }
+    }
 
 }
