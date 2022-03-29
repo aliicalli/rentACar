@@ -34,7 +34,6 @@ public class MaintenanceManager implements MaintenanceService {
 
     @Override
     public void add(CreateMaintenanceRequest createMaintenanceRequest) {
-        // bakıma bir araba yolldağımda arabanın state maintenance
         checkIfMaintenanceExists(createMaintenanceRequest);
         Maintenance result = this.modelMapperService.forRequest().map(createMaintenanceRequest, Maintenance.class);
         this.maintenanceDao.save(result);
