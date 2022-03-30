@@ -4,9 +4,14 @@ import com.etiya.rentACar.business.abstracts.ColorService;
 import com.etiya.rentACar.business.requests.colorRequests.CreateColorRequest;
 import com.etiya.rentACar.business.requests.colorRequests.DeleteColorRequest;
 import com.etiya.rentACar.business.requests.colorRequests.UpdateColorRequest;
+import com.etiya.rentACar.business.responses.carResponses.ListCarDto;
 import com.etiya.rentACar.business.responses.colorResponses.ListColorDto;
 import com.etiya.rentACar.core.crossCuttingConcerns.exceptionHandling.BusinessException;
 import com.etiya.rentACar.core.utilities.mapping.ModelMapperService;
+import com.etiya.rentACar.core.utilities.results.DataResult;
+import com.etiya.rentACar.core.utilities.results.Result;
+import com.etiya.rentACar.core.utilities.results.SuccessDataResult;
+import com.etiya.rentACar.core.utilities.results.SuccessResult;
 import com.etiya.rentACar.dataAccess.abstracts.ColorDao;
 import com.etiya.rentACar.entities.Color;
 import org.springframework.stereotype.Service;
@@ -26,33 +31,36 @@ public class ColorManager implements ColorService {
     }
 
     @Override
-    public void add(CreateColorRequest createColorRequest) {
+    public Result add(CreateColorRequest createColorRequest) {
 
         String colorName = createColorRequest.getName();
         checkIfColorExists(colorName);
 
         Color result = this.modelMapperService.forRequest().map(createColorRequest, Color.class);
         this.colorDao.save(result);
+        return new SuccessResult("COLOR_ADD");
 
     }
 
     @Override
-    public void update(UpdateColorRequest updateColorRequest) {
+    public Result update(UpdateColorRequest updateColorRequest) {
         Color result = this.modelMapperService.forRequest().map(updateColorRequest,Color.class);
         this.colorDao.save(result);
+        return new SuccessResult("COLOR_UPDATED");
     }
 
     @Override
-    public void delete(DeleteColorRequest deleteColorRequest) {
+    public Result delete(DeleteColorRequest deleteColorRequest) {
         int colorId = deleteColorRequest.getId();
         this.colorDao.deleteById(colorId);
+        return new SuccessResult("COLOR_DELETED");
     }
 
     @Override
-    public List<ListColorDto> getAll() {
+    public DataResult<List<ListColorDto>> getAll() {
         List<Color> results = this.colorDao.findAll();
         List<ListColorDto> response = results.stream().map(color -> modelMapperService.forDto().map(color, ListColorDto.class)).collect(Collectors.toList());
-        return response;
+        return new SuccessDataResult<List<ListColorDto>>(response);
     }
 
     private void checkIfColorExists(String colorName){

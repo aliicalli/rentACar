@@ -1,12 +1,17 @@
 package com.etiya.rentACar.business.concretes;
 
 import com.etiya.rentACar.business.abstracts.BrandService;
+import com.etiya.rentACar.business.constants.messages.BusinessMessages;
 import com.etiya.rentACar.business.requests.brandRequests.CreateBrandRequest;
 import com.etiya.rentACar.business.requests.brandRequests.DeleteBrandRequest;
 import com.etiya.rentACar.business.requests.brandRequests.UpdateBrandRequest;
 import com.etiya.rentACar.business.responses.brandResponses.ListBrandDto;
 import com.etiya.rentACar.core.crossCuttingConcerns.exceptionHandling.BusinessException;
 import com.etiya.rentACar.core.utilities.mapping.ModelMapperService;
+import com.etiya.rentACar.core.utilities.results.DataResult;
+import com.etiya.rentACar.core.utilities.results.Result;
+import com.etiya.rentACar.core.utilities.results.SuccessDataResult;
+import com.etiya.rentACar.core.utilities.results.SuccessResult;
 import com.etiya.rentACar.dataAccess.abstracts.BrandDao;
 import com.etiya.rentACar.entities.Brand;
 import org.springframework.stereotype.Service;
@@ -25,37 +30,40 @@ public class BrandManager implements BrandService {
     }
 
     @Override
-    public void add(CreateBrandRequest createBrandRequest) {
+    public Result add(CreateBrandRequest createBrandRequest) {
 
         String brandName = createBrandRequest.getName();
         checkIfBrandExists(brandName);
 
         Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
         this.brandDao.save(brand);
+        return new SuccessResult("BRAND_ADDED");
 
 
     }
 
     @Override
-    public void update(UpdateBrandRequest updateBrandRequest) {
+    public Result update(UpdateBrandRequest updateBrandRequest) {
 
         Brand result = this.modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
-        this.brandDao.save(result);
+         this.brandDao.save(result);
+         return new SuccessResult("BRAND_UPDATED");
     }
 
     @Override
-    public void delete(DeleteBrandRequest deleteBrandRequest) {
+    public Result delete(DeleteBrandRequest deleteBrandRequest) {
         int brandId = deleteBrandRequest.getId();
         this.brandDao.deleteById(brandId);
+        return new SuccessResult("BRAND_DELETED");
     }
 
     @Override
-    public List<ListBrandDto> getAll() {
+    public DataResult<List<ListBrandDto>> getAll() {
         List<Brand> results = this.brandDao.findAll();
         List<ListBrandDto> response = results.stream().map(brand -> this.modelMapperService.forDto()
                 .map(brand, ListBrandDto.class)).collect(Collectors.toList());
 
-        return response;
+        return new SuccessDataResult<List<ListBrandDto>>(response) ;
     }
 
     private void checkIfBrandExists(String brandName) {

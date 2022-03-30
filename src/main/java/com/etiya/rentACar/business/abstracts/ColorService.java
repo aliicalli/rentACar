@@ -5,14 +5,16 @@ import com.etiya.rentACar.business.requests.colorRequests.CreateColorRequest;
 import com.etiya.rentACar.business.requests.colorRequests.DeleteColorRequest;
 import com.etiya.rentACar.business.requests.colorRequests.UpdateColorRequest;
 import com.etiya.rentACar.business.responses.colorResponses.ListColorDto;
+import com.etiya.rentACar.core.utilities.results.DataResult;
+import com.etiya.rentACar.core.utilities.results.Result;
 
 import java.util.List;
 
 public interface ColorService {
 
-    void add(CreateColorRequest createColorRequest);
-    void update(UpdateColorRequest updateColorRequest);
-    void  delete(DeleteColorRequest deleteColorRequest);
+    Result add(CreateColorRequest createColorRequest);
+    Result update(UpdateColorRequest updateColorRequest);
+    Result  delete(DeleteColorRequest deleteColorRequest);
 
-    List<ListColorDto> getAll();
+    DataResult<List<ListColorDto>> getAll();
 }

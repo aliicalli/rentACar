@@ -5,6 +5,8 @@ import com.etiya.rentACar.business.requests.colorRequests.CreateColorRequest;
 import com.etiya.rentACar.business.requests.colorRequests.DeleteColorRequest;
 import com.etiya.rentACar.business.requests.colorRequests.UpdateColorRequest;
 import com.etiya.rentACar.business.responses.colorResponses.ListColorDto;
+import com.etiya.rentACar.core.utilities.results.DataResult;
+import com.etiya.rentACar.core.utilities.results.Result;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,23 +24,23 @@ public class ColorsController {
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody CreateColorRequest createColorRequest) {
-        this.colourService.add(createColorRequest);
+    public Result add(@RequestBody CreateColorRequest createColorRequest) {
+        return this.colourService.add(createColorRequest);
 
     }
 
     @PutMapping("/update")
-    public void update(@RequestBody UpdateColorRequest updateColorRequest) {
-        this.colourService.update(updateColorRequest);
+    public Result update(@RequestBody UpdateColorRequest updateColorRequest) {
+        return this.colourService.update(updateColorRequest);
     }
 
     @PostMapping("/delete")
-    public void delete(@RequestBody DeleteColorRequest deleteColorRequest) {
-        this.colourService.delete(deleteColorRequest);
+    public Result delete(@RequestBody DeleteColorRequest deleteColorRequest) {
+        return this.colourService.delete(deleteColorRequest);
     }
 
     @GetMapping("/getall")
-    public List<ListColorDto> getAll() {
+    public DataResult<List<ListColorDto>> getAll() {
         return this.colourService.getAll();
     }
 

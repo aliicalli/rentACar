@@ -4,13 +4,15 @@ import com.etiya.rentACar.business.requests.brandRequests.CreateBrandRequest;
 import com.etiya.rentACar.business.requests.brandRequests.DeleteBrandRequest;
 import com.etiya.rentACar.business.requests.brandRequests.UpdateBrandRequest;
 import com.etiya.rentACar.business.responses.brandResponses.ListBrandDto;
+import com.etiya.rentACar.core.utilities.results.DataResult;
+import com.etiya.rentACar.core.utilities.results.Result;
 
 import java.util.List;
 
 public interface BrandService {
-    void add(CreateBrandRequest createBrandRequest);
-    void update(UpdateBrandRequest updateBrandRequest);
-    void delete(DeleteBrandRequest deleteBrandRequest);
+    Result add(CreateBrandRequest createBrandRequest);
+    Result update(UpdateBrandRequest updateBrandRequest);
+    Result delete(DeleteBrandRequest deleteBrandRequest);
 
-    List<ListBrandDto> getAll();
+    DataResult<List<ListBrandDto>> getAll();
 }
