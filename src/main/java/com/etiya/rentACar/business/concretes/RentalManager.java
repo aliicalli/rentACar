@@ -69,7 +69,7 @@ public class RentalManager implements RentalService {
 
         this.rentalDao.save(result);
         totalPrice(returnRentalRequest.getCarId(), returnRentalRequest.getId(), returnRentalRequest.getRentCity(), returnRentalRequest.getRentCity());
-        return new SuccessResult("RENTAL_RETURNED");
+        return new SuccessResult("RENTAL_RETURNED Total Price : "+result.getTotalPrice() +" TL");
     }
 
 
