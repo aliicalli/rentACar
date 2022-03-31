@@ -19,4 +19,11 @@ public class ListRentalDto {
     private int customerId;
 
     private int carId;
+
+    private int rentCity;
+
+    private int returnCity;
+
+    private double totalPrice;
+
 }

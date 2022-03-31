@@ -16,11 +16,16 @@ public class UpdateRentalRequest {
 
     private LocalDate rentDate;
 
-    @Null
-    @JsonIgnore
-    private LocalDate returnDate = null;
+    private LocalDate returnDate;
 
     private int customerId;
 
+    private int returnCity;
+
     private int carId;
+
+    private int rentCity;
+
+    private double totalPrice;
+
 }

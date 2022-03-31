@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Null;
 import java.time.LocalDate;
 
@@ -17,12 +18,17 @@ public class CreateRentalRequest {
 
     private LocalDate rentDate;
 
-
-    @Null
     @JsonIgnore
     private LocalDate returnDate = null;
 
     private int customerId;
 
     private int carId;
+
+    private int rentCity;
+
+    private int returnCity;
+
+    private double totalPrice;
+
 }

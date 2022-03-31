@@ -6,7 +6,6 @@ import com.etiya.rentACar.business.requests.carRequests.CreateCarRequest;
 import com.etiya.rentACar.business.requests.carRequests.DeleteCarRequest;
 import com.etiya.rentACar.business.requests.carRequests.UpdateCarRequest;
 import com.etiya.rentACar.business.requests.carRequests.UpdateCarStateRequest;
-import com.etiya.rentACar.business.responses.brandResponses.ListBrandDto;
 import com.etiya.rentACar.business.responses.carResponses.CarDto;
 import com.etiya.rentACar.business.responses.carResponses.ListCarDto;
 import com.etiya.rentACar.core.utilities.mapping.ModelMapperService;
@@ -16,14 +15,11 @@ import com.etiya.rentACar.core.utilities.results.SuccessDataResult;
 import com.etiya.rentACar.core.utilities.results.SuccessResult;
 import com.etiya.rentACar.dataAccess.abstracts.CarDao;
 import com.etiya.rentACar.entities.Car;
-import com.etiya.rentACar.entities.CarStates;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,8 +67,8 @@ public class CarManager implements CarService {
 
 
     @Override
-    public CarDto getById(int id) {
-        Car result = this.carDao.getById(id);
+    public CarDto getById(int carId) {
+        Car result = this.carDao.getById(carId);
 
         CarDto response = this.modelMapperService.forDto().map(result, CarDto.class);
 

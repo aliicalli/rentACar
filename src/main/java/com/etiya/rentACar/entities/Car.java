@@ -47,4 +47,9 @@ public class Car {
     @OneToMany(mappedBy = "car")
     private List<Rental> rentals;
 
+    @ManyToOne
+    @JoinColumn(name = "cities_id")
+    private City cities;
+
+
 }

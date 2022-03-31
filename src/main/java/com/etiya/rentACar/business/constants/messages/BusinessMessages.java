@@ -10,5 +10,9 @@ public class BusinessMessages {
         public static final String CAR_RENTED = "Bu araç kirada";
     }
 
+    public class CityMessages{
+        public static final String CITY_ADD = "şehir eklendi.";
+    }
+
 
 }

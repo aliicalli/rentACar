@@ -33,6 +33,8 @@ public class CreateCarRequest {
     @Min(2015)
     private double modelYear;
 
+    private int citiesId;
+
     @NotNull
     private int colorId;
 
@@ -41,6 +43,8 @@ public class CreateCarRequest {
 
     @NotNull
     private CarStates carStateName;
+
+
 
 
 }

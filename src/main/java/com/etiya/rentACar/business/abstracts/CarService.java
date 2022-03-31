@@ -18,7 +18,7 @@ public interface CarService {
 
      Result updateCarState(UpdateCarStateRequest updateCarStateRequest);
 
-    CarDto getById(int id);
+    CarDto getById(int carId);
 
     DataResult<List<ListCarDto>> getAll();
     DataResult<List<ListCarDto>> getAllByModelYear(double ModelYear);

@@ -17,4 +17,11 @@ public class ReturnRentalRequest {
     private int customerId;
 
     private int carId;
+
+    private int rentCity;
+
+    private int returnCity;
+
+
+
 }

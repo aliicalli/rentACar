@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CarDto {
+
     private int id;
 
     private double dailyPrice;
@@ -24,9 +25,13 @@ public class CarDto {
     @JsonIgnore
     private  int colorId;
 
+    private int citiesId;
+
     private String brandName;
 
     private String colorName;
 
     private CarStates carStateName;
+
+
 }
