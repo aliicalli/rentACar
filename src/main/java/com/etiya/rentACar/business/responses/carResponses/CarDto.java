@@ -25,7 +25,7 @@ public class CarDto {
     @JsonIgnore
     private  int colorId;
 
-    private int citiesId;
+    private int cityId;
 
     private String brandName;
 

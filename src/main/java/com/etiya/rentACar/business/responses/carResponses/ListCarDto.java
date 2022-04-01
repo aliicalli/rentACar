@@ -18,7 +18,7 @@ public class ListCarDto {
 
     private double modelYear;
 
-    private int citiesName;
+    private int cityName;
 
     private String brandName;
 

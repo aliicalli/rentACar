@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateCarStateRequest {
     private int carId;
-    private int citiesId;
+    private int cityId;
     private CarStates carStateName;
 
 }

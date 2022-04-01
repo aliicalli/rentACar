@@ -5,10 +5,13 @@ import com.etiya.rentACar.business.requests.rentalRequests.CreateRentalRequest;
 import com.etiya.rentACar.business.requests.rentalRequests.DeleteRentalRequest;
 import com.etiya.rentACar.business.requests.rentalRequests.ReturnRentalRequest;
 import com.etiya.rentACar.business.requests.rentalRequests.UpdateRentalRequest;
+import com.etiya.rentACar.business.responses.rentalResponses.ListRentalDto;
+import com.etiya.rentACar.core.utilities.results.DataResult;
 import com.etiya.rentACar.core.utilities.results.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/rentals")
@@ -38,6 +41,11 @@ public class RentalsController {
     @PostMapping("/returnRental")
     public Result returnRental(@RequestBody ReturnRentalRequest returnRentalRequest) {
         return this.rentalService.returnRental(returnRentalRequest);
+    }
+
+    @GetMapping("/getall")
+    public DataResult<List<ListRentalDto>> getAll() {
+        return this.rentalService.getAll();
     }
 
 }

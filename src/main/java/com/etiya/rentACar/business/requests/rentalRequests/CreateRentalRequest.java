@@ -1,13 +1,14 @@
 package com.etiya.rentACar.business.requests.rentalRequests;
 
+import com.etiya.rentACar.entities.AdditionalService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.validation.constraints.Null;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -15,20 +16,24 @@ import java.time.LocalDate;
 public class CreateRentalRequest {
     @JsonIgnore
     private int id;
-
+    @NotNull
     private LocalDate rentDate;
+    @NotNull
+    private LocalDate returnDate;
 
-    @JsonIgnore
-    private LocalDate returnDate = null;
+    private double dailyPrice;
 
+    @NotNull
     private int customerId;
-
+    @NotNull
     private int carId;
+    @NotNull
+    private int rentCityId;
+    @NotNull
+    private int returnCityId;
 
-    private int rentCity;
+    private int [] additionalServiceId;
 
-    private int returnCity;
 
-    private double totalPrice;
 
 }

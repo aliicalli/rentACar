@@ -17,7 +17,7 @@ public class UpdateCarRequest {
 
     private double modelYear;
 
-    private int citiesId;
+    private int cityId;
 
     private int colorId;
 

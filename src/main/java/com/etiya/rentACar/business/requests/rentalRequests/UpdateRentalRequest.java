@@ -20,12 +20,13 @@ public class UpdateRentalRequest {
 
     private int customerId;
 
-    private int returnCity;
+    private int returnCityId;
+
+    private int rentCityId;
 
     private int carId;
 
-    private int rentCity;
+    private double dailyPrice;
 
-    private double totalPrice;
 
 }

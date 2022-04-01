@@ -8,12 +8,11 @@ import javax.persistence.*;
 import java.util.List;
 
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "cities")
-public class City {
-
+@Entity
+@Table(name = "additional_services")
+public class AdditionalService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,13 +21,10 @@ public class City {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "rentCityId")
-    private List<Rental> rentCityRentals;
+    @Column(name = "daily_price")
+    private int dailyPrice;
 
-    @OneToMany(mappedBy = "returnCityId")
-    private List<Rental> returnCityRentals;
-
-    @OneToMany(mappedBy = "city")
-    private List<Car> cars;
+    @OneToMany(mappedBy = "additionalService")
+    private List<OrderedAdditionalService> orderedAdditionalServices;
 
 }

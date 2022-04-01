@@ -48,8 +48,8 @@ public class Car {
     private List<Rental> rentals;
 
     @ManyToOne
-    @JoinColumn(name = "cities_id")
-    private City cities;
+    @JoinColumn(name = "city_id")
+    private City city;
 
 
 }
