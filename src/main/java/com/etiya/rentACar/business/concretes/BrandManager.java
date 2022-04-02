@@ -8,10 +8,7 @@ import com.etiya.rentACar.business.requests.brandRequests.UpdateBrandRequest;
 import com.etiya.rentACar.business.responses.brandResponses.ListBrandDto;
 import com.etiya.rentACar.core.crossCuttingConcerns.exceptionHandling.BusinessException;
 import com.etiya.rentACar.core.utilities.mapping.ModelMapperService;
-import com.etiya.rentACar.core.utilities.results.DataResult;
-import com.etiya.rentACar.core.utilities.results.Result;
-import com.etiya.rentACar.core.utilities.results.SuccessDataResult;
-import com.etiya.rentACar.core.utilities.results.SuccessResult;
+import com.etiya.rentACar.core.utilities.results.*;
 import com.etiya.rentACar.dataAccess.abstracts.BrandDao;
 import com.etiya.rentACar.entities.Brand;
 import org.springframework.stereotype.Service;
@@ -37,7 +34,7 @@ public class BrandManager implements BrandService {
 
         Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
         this.brandDao.save(brand);
-        return new SuccessResult("BRAND_ADDED");
+        return new SuccessResult(BusinessMessages.BrandMessages.BRAND_ADDED);
 
 
     }
@@ -47,14 +44,14 @@ public class BrandManager implements BrandService {
 
         Brand result = this.modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
          this.brandDao.save(result);
-         return new SuccessResult("BRAND_UPDATED");
+         return new SuccessResult(BusinessMessages.BrandMessages.BRAND_UPDATED);
     }
 
     @Override
     public Result delete(DeleteBrandRequest deleteBrandRequest) {
         int brandId = deleteBrandRequest.getId();
         this.brandDao.deleteById(brandId);
-        return new SuccessResult("BRAND_DELETED");
+        return new SuccessResult(BusinessMessages.BrandMessages.BRAND_DELETED);
     }
 
     @Override
@@ -69,7 +66,7 @@ public class BrandManager implements BrandService {
     private void checkIfBrandExists(String brandName) {
 
         if (this.brandDao.existsBrandByNameIgnoreCase(brandName)) {
-            throw new BusinessException("Bu marka daha önce kullanılmış");
+           throw  new BusinessException(BusinessMessages.BrandMessages.BRAND_EXIST);
         }
 
     }

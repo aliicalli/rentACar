@@ -1,7 +1,7 @@
 package com.etiya.rentACar.business.responses.rentalResponses;
 
-import com.etiya.rentACar.entities.AdditionalService;
-import com.etiya.rentACar.entities.OrderedAdditionalService;
+import com.etiya.rentACar.business.responses.additionalServiceResponses.AdditionalServiceDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,22 +13,31 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ListRentalDto {
+    @JsonIgnore
     private int id;
-
     private LocalDate rentDate;
-
     private LocalDate returnDate;
-
-    private int customerId;
-
-    private int carId;
-
-    private int rentCityId;
-
-    private int returnCityId;
-
+    private String carDescription;
+    private String customerFirstName;
+    private String customerLastName;
+    private String rentCityName;
+    private String returnCityName;
     private double dailyPrice;
+    private List<AdditionalServiceDto> additionalServiceName;
 
-    OrderedAdditionalService orderedAdditionalServicesId;
+//    private int id;
+//    private LocalDate rentDate;
+//    private LocalDate returnDate;
+//    private int customerId;
+//    private String customerFirstName;
+//    private String customerLastName;
+//    private int carId;
+//    private String carDescription;
+//    private int rentCityId;
+//    private String rentCityName;
+//    private int returnCityId;
+//    private String returnCityName;
+//    private double dailyPrice;
+//    List<OrderedAdditionalService> orderedAdditionalServicesName;
 
 }

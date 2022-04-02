@@ -30,7 +30,7 @@ public class DamagesController {
         return this.damageService.update(updateDamageRequest);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public Result delete(@RequestBody DeleteDamageRequest deleteDamageRequest) {
         return this.damageService.delete(deleteDamageRequest);
     }

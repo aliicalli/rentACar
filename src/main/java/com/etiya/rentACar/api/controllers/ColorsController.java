@@ -19,14 +19,12 @@ public class ColorsController {
     private ColorService colourService;
 
     public ColorsController(ColorService colourService) {
-
         this.colourService = colourService;
     }
 
     @PostMapping("/add")
     public Result add(@RequestBody CreateColorRequest createColorRequest) {
         return this.colourService.add(createColorRequest);
-
     }
 
     @PutMapping("/update")
@@ -34,7 +32,7 @@ public class ColorsController {
         return this.colourService.update(updateColorRequest);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public Result delete(@RequestBody DeleteColorRequest deleteColorRequest) {
         return this.colourService.delete(deleteColorRequest);
     }

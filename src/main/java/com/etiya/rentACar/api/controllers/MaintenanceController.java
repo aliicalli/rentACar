@@ -27,20 +27,20 @@ public class MaintenanceController {
 
     @PostMapping("/add")
     public Result add(@RequestBody CreateMaintenanceRequest createMaintenanceRequest) {
-       return this.maintenanceService.add(createMaintenanceRequest);
+        return this.maintenanceService.add(createMaintenanceRequest);
     }
 
     @PutMapping("/update")
     public Result update(@RequestBody UpdateMaintenanceRequest updateMaintenanceRequest) {
-      return   this.maintenanceService.update(updateMaintenanceRequest);
+        return this.maintenanceService.update(updateMaintenanceRequest);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public Result delete(@RequestBody DeleteMaintenanceRequest deleteMaintenanceRequest) {
-      return   this.maintenanceService.delete(deleteMaintenanceRequest);
+        return this.maintenanceService.delete(deleteMaintenanceRequest);
     }
 
-    @GetMapping("/getall")
+    @GetMapping("/getAll")
     public DataResult<List<ListMaintenanceDto>> getAll() {
         return this.maintenanceService.getAll();
     }

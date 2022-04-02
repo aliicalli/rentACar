@@ -33,7 +33,7 @@ public class RentalsController {
         return this.rentalService.update(updateRentalRequest);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public Result delete(@RequestBody DeleteRentalRequest deleteRentalRequest) {
         return this.rentalService.delete(deleteRentalRequest);
     }

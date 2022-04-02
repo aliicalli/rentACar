@@ -3,6 +3,7 @@ package com.etiya.rentACar.business.concretes;
 
 import com.etiya.rentACar.business.abstracts.CarService;
 import com.etiya.rentACar.business.abstracts.DamageService;
+import com.etiya.rentACar.business.constants.messages.BusinessMessages;
 import com.etiya.rentACar.business.requests.damageRequests.CreateDamageRequest;
 import com.etiya.rentACar.business.requests.damageRequests.DeleteDamageRequest;
 import com.etiya.rentACar.business.requests.damageRequests.UpdateDamageRequest;
@@ -43,26 +44,21 @@ public class DamageManager implements DamageService {
 
         Damage damage = this.modelMapperService.forRequest().map(createDamageRequest, Damage.class);
         this.damageDao.save(damage);
-        return new SuccessResult("DAMAGE_ADD");
+        return new SuccessResult(BusinessMessages.DamageMessages.DAMAGE_ADD);
     }
 
     @Override
     public Result update(UpdateDamageRequest updateDamageRequest) {
-//        Damage result = this.damageDao.getById(updateDamageRequest.getId());
-//        result.setDescription(updateDamageRequest.getDescription());
-//
-//        this.damageDao.save(result);
-
         Damage result = this.modelMapperService.forRequest().map(updateDamageRequest, Damage.class);
         this.damageDao.save(result);
-        return new SuccessResult("DAMAGE_UPDATE");
+        return new SuccessResult(BusinessMessages.DamageMessages.DAMAGE_UPDATED);
     }
 
     @Override
     public Result delete(DeleteDamageRequest deleteDamageRequest) {
 
         this.damageDao.deleteById(deleteDamageRequest.getId());
-        return new SuccessResult("DAMAGE_DELETE");
+        return new SuccessResult(BusinessMessages.DamageMessages.DAMAGE_DELETED);
     }
 
     @Override

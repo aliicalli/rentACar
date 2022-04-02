@@ -14,5 +14,4 @@ public class DamageDto {
     private String description;
     private LocalDate date;
     private String carDescription;
-    private int carId;
 }

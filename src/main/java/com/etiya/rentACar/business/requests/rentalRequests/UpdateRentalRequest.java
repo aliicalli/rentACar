@@ -1,17 +1,17 @@
 package com.etiya.rentACar.business.requests.rentalRequests;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Null;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateRentalRequest {
+
     private int id;
 
     private LocalDate rentDate;
@@ -28,5 +28,6 @@ public class UpdateRentalRequest {
 
     private double dailyPrice;
 
+    private List<Integer> additionalServiceId;
 
 }

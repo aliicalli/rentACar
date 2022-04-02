@@ -12,25 +12,12 @@ import lombok.NoArgsConstructor;
 public class CarDto {
 
     private int id;
-
     private double dailyPrice;
-
     private String description;
-
     private double modelYear;
-
-    @JsonIgnore
-    private  int brandId;
-
-    @JsonIgnore
-    private  int colorId;
-
-    private int cityId;
-
+    private String  cityName;
     private String brandName;
-
     private String colorName;
-
     private CarStates carStateName;
 
 

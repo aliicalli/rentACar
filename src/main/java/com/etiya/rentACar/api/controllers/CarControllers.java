@@ -32,7 +32,7 @@ public class CarControllers {
         return this.carService.update(updateCarRequest);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public Result delete(@RequestBody DeleteCarRequest deleteCarRequest) {
         return this.carService.delete(deleteCarRequest);
     }

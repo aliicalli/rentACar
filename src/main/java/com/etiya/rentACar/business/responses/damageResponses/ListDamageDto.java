@@ -15,6 +15,5 @@ public class ListDamageDto {
     private String description;
     private LocalDate date;
     private String carDescription;
-    private int carId;
 
 }

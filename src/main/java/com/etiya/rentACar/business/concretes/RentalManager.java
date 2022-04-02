@@ -20,7 +20,6 @@ import com.etiya.rentACar.core.utilities.results.SuccessDataResult;
 import com.etiya.rentACar.core.utilities.results.SuccessResult;
 import com.etiya.rentACar.dataAccess.abstracts.RentalDao;
 import com.etiya.rentACar.entities.CarStates;
-import com.etiya.rentACar.entities.OrderedAdditionalService;
 import com.etiya.rentACar.entities.Rental;
 import org.springframework.stereotype.Service;
 
@@ -44,32 +43,20 @@ public class RentalManager implements RentalService {
     @Override
     public Result add(CreateRentalRequest createRentalRequest) {
         int carId = createRentalRequest.getCarId();
-        checkIfRentalExists(carId);
+        checkIfCarState(carId);
+
         Rental result = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
         this.rentalDao.save(result);
-        // rented
-        UpdateCarStateRequest updateCarStateRequest = new UpdateCarStateRequest();
-        updateCarStateRequest.setCarId(carId);
-        updateCarStateRequest.setCarStateName(CarStates.Rented);
-        this.carService.updateCarState(updateCarStateRequest);
-        //state güncelleme
 
-        // rental   createRentalRequest.getId()
-        // createRentalRequest.getAdditionalServiceId()
-       // List<CreateOrderedAdditionalServiceRequest> result1 = this.modelMapperService.forRequest().map(createRentalRequest,CreateOrderedAdditionalServiceRequest.class);
-        //CreateOrderedAdditionalServiceRequest deneme = new CreateOrderedAdditionalServiceRequest();
-        //[1,2,3]
+
+        int rentCityId = createRentalRequest.getRentCityId();
+        CarStates states = CarStates.Rented;
+        updateCarState(carId, rentCityId, states);
+
         int rentalId = result.getId();
-        CreateOrderedAdditionalServiceRequest deneme = new CreateOrderedAdditionalServiceRequest();
-        deneme.setRentalId(rentalId);
+        List<Integer> additionalServicesId = createRentalRequest.getAdditionalServiceId();
+        createOrderedAdditionalService(rentalId, additionalServicesId);
 
-        for (int item : createRentalRequest.getAdditionalServiceId()) {
-
-            deneme.setAdditionalServiceId(item);
-            this.orderedAdditionalServiceService.add(deneme);
-        }
-
-        //
         return new SuccessResult(BusinessMessages.RentalMessages.RENTAL_ADD);
     }
 
@@ -87,27 +74,33 @@ public class RentalManager implements RentalService {
         return new SuccessResult(BusinessMessages.RentalMessages.RENTAL_DELETED);
     }
 
+    //TODO: Araba durumu güncellemesi ve eğer teslim tarihinden geç getirdiyse (erken gelmesi durumunda fiyatlandırmada bir değişiklik olmuyor genelde araç kiralama şirketlerinde :) ) veya teslim edeceği şehirden başka bir şehire getirmiş ise bunların güncellenmesi gerekiyor ona göre de fiyat hesaplamaları yapılabilir.(aynı şekilde eh hizmetlerden de fazla veya eksik alınmış ise additionalServicesid listesine eklenebilir)!
+
     public Result returnRental(ReturnRentalRequest returnRentalRequest) {
 
-        //checkIfRentalIdExists(returnRentalRequest.getId());
+        CarStates states = CarStates.Available;
+        int carId = returnRentalRequest.getCarId();
+        int returnCıtyId = returnRentalRequest.getReturnCityId();
+        updateCarState(carId, returnCıtyId, states);
+
+/*        List<Integer> additionalservicesId = returnRentalRequest.getAdditionalServiceId();
+
+        checkIfRentalIdExists(returnRentalRequest.getId());
         Rental result = this.rentalDao.getById(returnRentalRequest.getId());
-        UpdateCarStateRequest updateCarStateRequest = new UpdateCarStateRequest();
-        updateCarStateRequest.setCarId(returnRentalRequest.getCarId());
-        updateCarStateRequest.setCarStateName(CarStates.Available);
-        this.carService.updateCarState(updateCarStateRequest);
-        this.rentalDao.save(result);
-        return new SuccessResult(BusinessMessages.RentalMessages.RENTAL_NOT_ID);
+        this.rentalDao.save(result);*/
+
+        return new SuccessResult(BusinessMessages.RentalMessages.RENTAL_RETURNED);
     }
 
     @Override
     public DataResult<List<ListRentalDto>> getAll() {
         List<Rental> results = this.rentalDao.findAll();
-        List<ListRentalDto> response = results.stream().map(rental -> modelMapperService.forDto().map(rental,ListRentalDto.class)).collect(Collectors.toList());
+        List<ListRentalDto> response = results.stream().map(rental -> modelMapperService.forDto().map(rental, ListRentalDto.class)).collect(Collectors.toList());
         return new SuccessDataResult<List<ListRentalDto>>(response);
     }
 
 
-    private void checkIfRentalExists(int carId) {
+    private void checkIfCarState(int carId) {
         CarDto result = this.carService.getById(carId);
         if (result.getCarStateName() != CarStates.Available) {
             throw new BusinessException(BusinessMessages.RentalMessages.CAR_NOT_AVAILABLE);
@@ -115,9 +108,27 @@ public class RentalManager implements RentalService {
 
     }
 
+    // Todo : Bu methoda bak!
     private void checkIfRentalIdExists(int rentalId) {
         if (!this.rentalDao.existsById(rentalId)) {
-            throw new BusinessException("Böyle bir id ye ait kayıt yoktur");
+            throw new BusinessException(BusinessMessages.RentalMessages.RENTAL_NOT_EXIST);
+        }
+    }
+
+    private void updateCarState(int carId, int cityId, CarStates states) {
+        UpdateCarStateRequest updateCarStateRequest = new UpdateCarStateRequest();
+        updateCarStateRequest.setCarId(carId);
+        updateCarStateRequest.setCarStateName(states);
+        updateCarStateRequest.setCityId(cityId);
+        this.carService.updateCarState(updateCarStateRequest);
+    }
+
+    private void createOrderedAdditionalService(int rentalId, List<Integer> additionalServicesId) {
+        CreateOrderedAdditionalServiceRequest createOrderedAdditionalServiceRequest = new CreateOrderedAdditionalServiceRequest();
+        for (int additionalServiceId : additionalServicesId) {
+            createOrderedAdditionalServiceRequest.setRentalId(rentalId);
+            createOrderedAdditionalServiceRequest.setAdditionalServiceId(additionalServiceId);
+            this.orderedAdditionalServiceService.add(createOrderedAdditionalServiceRequest);
         }
     }
 

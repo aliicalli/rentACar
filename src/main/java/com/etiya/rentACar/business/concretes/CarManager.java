@@ -2,6 +2,7 @@ package com.etiya.rentACar.business.concretes;
 
 
 import com.etiya.rentACar.business.abstracts.CarService;
+import com.etiya.rentACar.business.constants.messages.BusinessMessages;
 import com.etiya.rentACar.business.requests.carRequests.CreateCarRequest;
 import com.etiya.rentACar.business.requests.carRequests.DeleteCarRequest;
 import com.etiya.rentACar.business.requests.carRequests.UpdateCarRequest;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.BatchUpdateException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +39,7 @@ public class CarManager implements CarService {
     public Result add(CreateCarRequest createCarRequest) {
         Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
         this.carDao.save(car);
-        return new SuccessResult("CAR_ADDED");
+        return new SuccessResult(BusinessMessages.CarMessages.CAR_ADDED);
 
     }
 
@@ -46,7 +48,7 @@ public class CarManager implements CarService {
 
         Car result = this.modelMapperService.forRequest().map(updateCarRequest, Car.class);
         this.carDao.save(result);
-        return new SuccessResult("CAR_UPDATED");
+        return new SuccessResult(BusinessMessages.CarMessages.CAR_UPDATED);
     }
 
 
@@ -54,15 +56,20 @@ public class CarManager implements CarService {
     public Result delete(DeleteCarRequest deleteCarRequest) {
         int carId = deleteCarRequest.getId();
         this.carDao.deleteById(carId);
-        return new SuccessResult("CAR_DELETED");
+        return new SuccessResult(BusinessMessages.CarMessages.CAR_DELETED);
     }
 
     @Override
     public Result updateCarState(UpdateCarStateRequest updateCarStateRequest) {
-        Car result = this.carDao.getById(updateCarStateRequest.getCarId());
-        result.setCarState(updateCarStateRequest.getCarStateName());
+        int carId = updateCarStateRequest.getCarId();
+        Car car = this.carDao.getById(carId);
+        UpdateCarRequest response = modelMapperService.forRequest().map(car, UpdateCarRequest.class);
+        response.setId(carId);
+        response.setCarStateName(updateCarStateRequest.getCarStateName());
+        response.setCityId(updateCarStateRequest.getCityId());
+        Car result = modelMapperService.forRequest().map(response, Car.class);
         this.carDao.save(result);
-        return new SuccessResult("CAR_UPDATED");
+        return new SuccessResult(BusinessMessages.CarMessages.CAR_STATE_UPDATED);
     }
 
 
@@ -83,6 +90,7 @@ public class CarManager implements CarService {
                 .collect(Collectors.toList());
 
         return new SuccessDataResult<List<ListCarDto>>(response);
+
     }
 
     @Override
