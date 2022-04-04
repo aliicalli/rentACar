@@ -13,6 +13,7 @@ import com.etiya.rentACar.business.requests.rentalRequests.ReturnRentalRequest;
 import com.etiya.rentACar.business.requests.rentalRequests.UpdateRentalRequest;
 import com.etiya.rentACar.business.responses.carResponses.CarDto;
 import com.etiya.rentACar.business.responses.rentalResponses.ListRentalDto;
+import com.etiya.rentACar.business.responses.rentalResponses.RentalDto;
 import com.etiya.rentACar.core.crossCuttingConcerns.exceptionHandling.BusinessException;
 import com.etiya.rentACar.core.utilities.mapping.ModelMapperService;
 import com.etiya.rentACar.core.utilities.results.DataResult;
@@ -45,6 +46,7 @@ public class RentalManager implements RentalService {
     public Result add(CreateRentalRequest createRentalRequest) {
         int carId = createRentalRequest.getCarId();
         checkIfCarState(carId);
+
 
         Rental result = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
         this.rentalDao.save(result);
@@ -89,6 +91,13 @@ public class RentalManager implements RentalService {
         updateCarState(carId, returnCıtyId, states);
 
         return new SuccessResult(BusinessMessages.RentalMessages.RENTAL_RETURNED);
+    }
+
+    @Override
+    public RentalDto getById(int rentalId) {
+        Rental rental = this.rentalDao.getById(rentalId);
+        RentalDto rentalDto = this.modelMapperService.forDto().map(rental,RentalDto.class);
+        return rentalDto;
     }
 
     private void updateCarKilometer(ReturnRentalRequest returnRentalRequest) {

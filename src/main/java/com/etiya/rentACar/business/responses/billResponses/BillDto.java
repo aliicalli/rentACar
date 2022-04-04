@@ -12,10 +12,11 @@ import java.time.LocalDate;
 public class BillDto {
     private int id;
     private String billNumber;
-    private LocalDate rentDate;
+    private LocalDate rentalRentDate;
     private LocalDate createDate;
-    private LocalDate returnDate;
+    private LocalDate rentalReturnDate;
     private double totalPrice;
     private int totalRentDay;
-    private String customerName;
+    private String customerFirstName;
+    private String customerLastName;
 }
