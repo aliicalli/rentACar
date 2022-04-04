@@ -11,6 +11,7 @@ public class ReturnRentalRequest {
     private int id;
     private int carId;
     private int returnCityId;
+    private double endKilometer;
 
 //    private LocalDate rentDate;
 //    private LocalDate returnDate;

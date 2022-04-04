@@ -25,6 +25,9 @@ public class Rental {
     @Column(name = "return_date")
     private LocalDate returnDate;
 
+    @Column(name = "end_kilometer")
+    private double endKilometer;
+
     @ManyToOne
     @JoinColumn(name = "rent_city_id", referencedColumnName = "id")
     private City rentCityId;

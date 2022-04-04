@@ -25,5 +25,7 @@ public class UpdateCarRequest {
 
     private CarStates carStateName;
 
+    private double kilometer;
+
 
 }

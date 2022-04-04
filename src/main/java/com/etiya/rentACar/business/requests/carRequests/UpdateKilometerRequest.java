@@ -1,6 +1,5 @@
 package com.etiya.rentACar.business.requests.carRequests;
 
-import com.etiya.rentACar.entities.CarStates;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateCarStateRequest {
-    private int carId;
-    private int cityId;
+public class UpdateKilometerRequest {
+    private  int id;
     private double kilometer;
-    private CarStates carStateName;
-
 }

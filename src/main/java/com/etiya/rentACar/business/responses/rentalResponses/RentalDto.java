@@ -1,8 +1,6 @@
 package com.etiya.rentACar.business.responses.rentalResponses;
 
-import com.etiya.rentACar.business.responses.additionalServiceResponses.AdditionalServiceDto;
-import com.etiya.rentACar.entities.AdditionalService;
-import com.etiya.rentACar.entities.OrderedAdditionalService;
+import com.etiya.rentACar.business.responses.orderedAdditionalServiceResponses.OrderedAdditionalServiceDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +23,7 @@ public class RentalDto {
     private String rentCityName;
     private String returnCityName;
     private double dailyPrice;
-    private List<AdditionalServiceDto> additionalServiceName;
+    private List<OrderedAdditionalServiceDto> orderedAdditionalServices;
 
 
 //    private int id;

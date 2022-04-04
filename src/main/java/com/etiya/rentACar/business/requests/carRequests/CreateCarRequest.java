@@ -44,6 +44,8 @@ public class CreateCarRequest {
     @NotNull
     private CarStates carStateName;
 
+    private double kilometer;
+
 
 
 
