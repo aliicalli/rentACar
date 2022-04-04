@@ -4,6 +4,7 @@ import com.etiya.rentACar.business.abstracts.CarService;
 import com.etiya.rentACar.business.abstracts.OrderedAdditionalServiceService;
 import com.etiya.rentACar.business.abstracts.RentalService;
 import com.etiya.rentACar.business.constants.messages.BusinessMessages;
+import com.etiya.rentACar.business.requests.carRequests.UpdateCarCityRequest;
 import com.etiya.rentACar.business.requests.carRequests.UpdateCarStateRequest;
 import com.etiya.rentACar.business.requests.carRequests.UpdateKilometerRequest;
 import com.etiya.rentACar.business.requests.orderedAdditionalServiceRequest.CreateOrderedAdditionalServiceRequest;
@@ -51,9 +52,8 @@ public class RentalManager implements RentalService {
         Rental result = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
         this.rentalDao.save(result);
 
-        int rentCityId = createRentalRequest.getRentCityId();
         CarStates status = CarStates.Rented;
-        updateCarState(carId, rentCityId, status);
+        updateCarState(carId, status);
 
         int rentalId = result.getId();
         List<Integer> additionalServicesId = createRentalRequest.getAdditionalServiceId();
@@ -78,8 +78,10 @@ public class RentalManager implements RentalService {
 
 
     public Result returnRental(ReturnRentalRequest returnRentalRequest) {
+        checkIfRentalIdExists(returnRentalRequest.getId());
 
         Rental result = this.rentalDao.getById(returnRentalRequest.getId());
+        result.setReturnDate(returnRentalRequest.getReturnDate());
         result.setEndKilometer(returnRentalRequest.getEndKilometer());
         this.rentalDao.save(result);
 
@@ -88,7 +90,8 @@ public class RentalManager implements RentalService {
         int carId = returnRentalRequest.getCarId();
         int returnCıtyId = returnRentalRequest.getReturnCityId();
         updateCarKilometer(returnRentalRequest);
-        updateCarState(carId, returnCıtyId, states);
+        updateCarState(carId, states);
+        updateCarCity(carId, returnCıtyId);
 
         return new SuccessResult(BusinessMessages.RentalMessages.RENTAL_RETURNED);
     }
@@ -96,14 +99,14 @@ public class RentalManager implements RentalService {
     @Override
     public RentalDto getById(int rentalId) {
         Rental rental = this.rentalDao.getById(rentalId);
-        RentalDto rentalDto = this.modelMapperService.forDto().map(rental,RentalDto.class);
+        RentalDto rentalDto = this.modelMapperService.forDto().map(rental, RentalDto.class);
         return rentalDto;
     }
 
     private void updateCarKilometer(ReturnRentalRequest returnRentalRequest) {
         double startCarKilometer = returnRentalRequest.getEndKilometer();
         int carId = returnRentalRequest.getCarId();
-        UpdateKilometerRequest updateKilometerRequest= new UpdateKilometerRequest();
+        UpdateKilometerRequest updateKilometerRequest = new UpdateKilometerRequest();
         updateKilometerRequest.setId(carId);
         updateKilometerRequest.setKilometer(startCarKilometer);
         this.carService.updateCarKilometer(updateKilometerRequest);
@@ -126,23 +129,27 @@ public class RentalManager implements RentalService {
 
     }
 
-    // Todo : Bu methoda bak!
     private void checkIfRentalIdExists(int rentalId) {
         if (!this.rentalDao.existsById(rentalId)) {
             throw new BusinessException(BusinessMessages.RentalMessages.RENTAL_NOT_EXIST);
         }
     }
 
-    // şu an city önemli değil ama bunu da ayrı bir method ile yapılması lazım!!
-    private void updateCarState(int carId, int cityId, CarStates status) {
+    private void updateCarState(int carId, CarStates status) {
         UpdateCarStateRequest updateCarStateRequest = new UpdateCarStateRequest();
         updateCarStateRequest.setCarId(carId);
         updateCarStateRequest.setCarStateName(status);
-        updateCarStateRequest.setCityId(cityId);
         this.carService.updateCarState(updateCarStateRequest);
+
     }
 
-    //ordered kısmında olması sağlıklı
+    private void updateCarCity(int carId, int cityId) {
+        UpdateCarCityRequest updateCarCityRequest = new UpdateCarCityRequest();
+        updateCarCityRequest.setId(carId);
+        updateCarCityRequest.setCityId(cityId);
+        this.carService.updateCarCity(updateCarCityRequest);
+    }
+
     private void createOrderedAdditionalService(int rentalId, List<Integer> additionalServicesId) {
         CreateOrderedAdditionalServiceRequest createOrderedAdditionalServiceRequest = new CreateOrderedAdditionalServiceRequest();
         for (int additionalServiceId : additionalServicesId) {

@@ -24,7 +24,7 @@ public interface BillService {
 
     DataResult<List<ListBillDto>> getByCustomerId(int customerId);
 
-    DataResult<List<ListBillDto>> findByRentDateBetween(LocalDate startDate, LocalDate endDate);
+    DataResult<List<ListBillDto>> findByCreateDateBetween(LocalDate startDate, LocalDate endDate);
 
 
 //    DataResult<List<ListBillDto>> getAllByRentDateBetweenAndAndReturnDate(LocalDate rentDate, LocalDate returnDate);

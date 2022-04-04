@@ -69,4 +69,9 @@ public class BusinessMessages {
         public static final String OREDERED_ADDITIONAL_SERVICE_DELETED = "Ek hizmetler siparişi başarıyla silindi";
         public static final String OREDERED_ADDITIONAL_SERVICE_UPDATED = "Ek hizmetler siparişi başarıyla güncellendi";
     }
+    public class BillMessages{
+        public static final String BILL_ADDED = "Fatura başarıyla eklendi";
+        public static final String BILL_DELETED = "Fatıra başarıyla silindi";
+        public static final String BILL_UPDATED = "Fatura başarıyla güncellendi";
+    }
 }

@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomerDao extends JpaRepository<Customer, Integer> {
-    // List<Customer> getById(int CarId);
+    Boolean ExistByCustomerId(int customerId);
 }
+

@@ -6,6 +6,7 @@ import com.etiya.rentACar.business.constants.messages.BusinessMessages;
 import com.etiya.rentACar.business.requests.customerRequests.CreateCustomerRequest;
 import com.etiya.rentACar.business.requests.customerRequests.DeleteCustomerRequest;
 import com.etiya.rentACar.business.requests.customerRequests.UpdateCustomerRequest;
+import com.etiya.rentACar.business.responses.customerResponses.CustomerDto;
 import com.etiya.rentACar.business.responses.customerResponses.ListCustomerDto;
 import com.etiya.rentACar.core.utilities.mapping.ModelMapperService;
 import com.etiya.rentACar.core.utilities.results.DataResult;
@@ -52,6 +53,12 @@ public class CustomerManager implements CustomerService {
         this.customerDao.deleteById(customerId);
         return new SuccessResult(BusinessMessages.CustomerMessages.CUSTOMER_DELETED);
     }
+
+    @Override
+    public Boolean checkIfExistCustomerId(int customerId) {
+        return this.customerDao.ExistByCustomerId(customerId);
+    }
+
 
     @Override
     public DataResult<List<ListCustomerDto>> getAll() {
