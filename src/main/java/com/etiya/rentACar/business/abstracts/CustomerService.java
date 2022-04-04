@@ -17,7 +17,5 @@ public interface CustomerService {
 
     Result delete(DeleteCustomerRequest deleteCustomerRequest);
 
-    Boolean checkIfExistCustomerId(int customerId);
-
     DataResult<List<ListCustomerDto>> getAll();
 }

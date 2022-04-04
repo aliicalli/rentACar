@@ -54,10 +54,6 @@ public class CustomerManager implements CustomerService {
         return new SuccessResult(BusinessMessages.CustomerMessages.CUSTOMER_DELETED);
     }
 
-    @Override
-    public Boolean checkIfExistCustomerId(int customerId) {
-        return this.customerDao.ExistByCustomerId(customerId);
-    }
 
 
     @Override
