@@ -12,5 +12,5 @@ public class UpdateAdditionalServiceRequest {
 
     private String name;
 
-    private int dailyPrice;
+    private double dailyPrice;
 }

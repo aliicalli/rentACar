@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CityDto {
     private int id;
-
     private String name;
 
 

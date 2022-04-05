@@ -41,7 +41,6 @@ public class BrandManager implements BrandService {
 
     @Override
     public Result update(UpdateBrandRequest updateBrandRequest) {
-
         Brand result = this.modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
          this.brandDao.save(result);
          return new SuccessResult(BusinessMessages.BrandMessages.BRAND_UPDATED);

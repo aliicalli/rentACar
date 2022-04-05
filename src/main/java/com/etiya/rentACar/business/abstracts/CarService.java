@@ -13,7 +13,7 @@ public interface CarService {
     Result update(UpdateCarRequest updateCarRequest);
     Result delete(DeleteCarRequest deleteCarRequest);
 
-     Result updateCarState(UpdateCarStateRequest updateCarStateRequest);
+     void updateCarState(UpdateCarStateRequest updateCarStateRequest);
      void updateCarKilometer(UpdateKilometerRequest updateKilometerRequest);
      void updateCarCity(UpdateCarCityRequest updateCarCityRequest);
 

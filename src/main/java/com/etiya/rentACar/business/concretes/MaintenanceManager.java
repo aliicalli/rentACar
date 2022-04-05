@@ -72,8 +72,8 @@ public class MaintenanceManager implements MaintenanceService {
 
 
     @Override
-    public DataResult<List<ListMaintenanceDto>> getAllMaintenanceByCarId(int CarId) {
-        List<Maintenance> maintenances = this.maintenanceDao.getByCarId(CarId);
+    public DataResult<List<ListMaintenanceDto>> getAllMaintenanceByCarId(int carId) {
+        List<Maintenance> maintenances = this.maintenanceDao.getByCarId(carId);
         List<ListMaintenanceDto> response = maintenances.stream().map(maintenance -> this.modelMapperService.forDto()
                         .map(maintenance, ListMaintenanceDto.class))
                 .collect(Collectors.toList());
@@ -90,9 +90,9 @@ public class MaintenanceManager implements MaintenanceService {
     }
 
     private void updateCarState(CreateMaintenanceRequest createMaintenanceRequest) {
-        CarDto carDto = this.carService.getById(createMaintenanceRequest.getCarId());
+        CarDto result = this.carService.getById(createMaintenanceRequest.getCarId());
         UpdateCarStateRequest updateCarStateRequest = new UpdateCarStateRequest();
-        updateCarStateRequest.setCarId(createMaintenanceRequest.getCarId());
+        updateCarStateRequest.setId(createMaintenanceRequest.getCarId());
         updateCarStateRequest.setCarStateName(CarStates.UnderMaintenance);
         this.carService.updateCarState(updateCarStateRequest);
 

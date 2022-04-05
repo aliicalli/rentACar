@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface RentalDao extends JpaRepository<Rental, Integer> {
     Boolean existsById(int rentalId);
-    List<Rental> getByCarId(int CarId);
+    List<Rental> getByCarId(int carId);
 }

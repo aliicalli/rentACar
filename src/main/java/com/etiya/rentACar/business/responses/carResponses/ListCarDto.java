@@ -17,6 +17,7 @@ public class ListCarDto {
     private String brandName;
     private String colorName;
     private CarStates carStateName;
+    private double kilometer;
 
 
 }

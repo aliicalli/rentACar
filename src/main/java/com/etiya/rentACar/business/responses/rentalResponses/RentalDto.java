@@ -23,6 +23,8 @@ public class RentalDto {
     private String rentCityName;
     private String returnCityName;
     private double dailyPrice;
+    private double beforeRentKilometer;
+    private double afterRentKilometer;
     private List<OrderedAdditionalServiceDto> orderedAdditionalServices;
 
 

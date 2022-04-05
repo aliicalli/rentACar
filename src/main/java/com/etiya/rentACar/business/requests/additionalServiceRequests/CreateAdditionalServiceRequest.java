@@ -14,5 +14,5 @@ public class CreateAdditionalServiceRequest {
 
     private String name;
 
-    private int dailyPrice;
+    private double dailyPrice;
 }

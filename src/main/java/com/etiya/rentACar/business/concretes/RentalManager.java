@@ -7,6 +7,7 @@ import com.etiya.rentACar.business.constants.messages.BusinessMessages;
 import com.etiya.rentACar.business.requests.carRequests.UpdateCarCityRequest;
 import com.etiya.rentACar.business.requests.carRequests.UpdateCarStateRequest;
 import com.etiya.rentACar.business.requests.carRequests.UpdateKilometerRequest;
+import com.etiya.rentACar.business.requests.carRequests.UpdateReturnCarStateRequest;
 import com.etiya.rentACar.business.requests.orderedAdditionalServiceRequest.CreateOrderedAdditionalServiceRequest;
 import com.etiya.rentACar.business.requests.rentalRequests.CreateRentalRequest;
 import com.etiya.rentACar.business.requests.rentalRequests.DeleteRentalRequest;
@@ -48,16 +49,20 @@ public class RentalManager implements RentalService {
         int carId = createRentalRequest.getCarId();
         checkIfCarState(carId);
 
-
         Rental result = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
-        this.rentalDao.save(result);
 
-        CarStates status = CarStates.Rented;
-        updateCarState(carId, status);
+
+        CarDto car = this.carService.getById(carId);
+        result.setBeforeRentKilometer(car.getKilometer());
+        this.rentalDao.save(result);
 
         int rentalId = result.getId();
         List<Integer> additionalServicesId = createRentalRequest.getAdditionalServiceId();
-        createOrderedAdditionalService(rentalId, additionalServicesId);
+        orderedAdditionalServiceService.CreateOrderedAdditionalService(rentalId, additionalServicesId);
+
+        updateCarCity(carId,createRentalRequest.getReturnCityId());
+        CarStates status = CarStates.Rented;
+        updateCarState(carId, status);
 
         return new SuccessResult(BusinessMessages.RentalMessages.RENTAL_ADD);
     }
@@ -76,35 +81,33 @@ public class RentalManager implements RentalService {
         return new SuccessResult(BusinessMessages.RentalMessages.RENTAL_DELETED);
     }
 
-
+    @Override
     public Result returnRental(ReturnRentalRequest returnRentalRequest) {
         checkIfRentalIdExists(returnRentalRequest.getId());
-
         Rental result = this.rentalDao.getById(returnRentalRequest.getId());
         result.setReturnDate(returnRentalRequest.getReturnDate());
-        result.setEndKilometer(returnRentalRequest.getEndKilometer());
+        result.setAfterRentKilometer(returnRentalRequest.getAfterRentKilometer());
         this.rentalDao.save(result);
 
-
-        CarStates states = CarStates.Available;
-        int carId = returnRentalRequest.getCarId();
         int returnCıtyId = returnRentalRequest.getReturnCityId();
         updateCarKilometer(returnRentalRequest);
-        updateCarState(carId, states);
+        int carId = returnRentalRequest.getCarId();
         updateCarCity(carId, returnCıtyId);
+        //CarStates stateName = CarStates.Available;
+        updateCarState(carId, CarStates.Available);
 
         return new SuccessResult(BusinessMessages.RentalMessages.RENTAL_RETURNED);
     }
 
     @Override
     public RentalDto getById(int rentalId) {
-        Rental rental = this.rentalDao.getById(rentalId);
-        RentalDto rentalDto = this.modelMapperService.forDto().map(rental, RentalDto.class);
+        Rental result = this.rentalDao.getById(rentalId);
+        RentalDto rentalDto = this.modelMapperService.forDto().map(result, RentalDto.class);
         return rentalDto;
     }
 
     private void updateCarKilometer(ReturnRentalRequest returnRentalRequest) {
-        double startCarKilometer = returnRentalRequest.getEndKilometer();
+        double startCarKilometer = returnRentalRequest.getAfterRentKilometer();
         int carId = returnRentalRequest.getCarId();
         UpdateKilometerRequest updateKilometerRequest = new UpdateKilometerRequest();
         updateKilometerRequest.setId(carId);
@@ -115,7 +118,7 @@ public class RentalManager implements RentalService {
     @Override
     public DataResult<List<ListRentalDto>> getAll() {
         List<Rental> results = this.rentalDao.findAll();
-        List<ListRentalDto> response = results.stream().map(rental -> modelMapperService.forDto()
+        List<ListRentalDto> response = results.stream().map(rental -> this.modelMapperService.forDto()
                 .map(rental, ListRentalDto.class)).collect(Collectors.toList());
         return new SuccessDataResult<List<ListRentalDto>>(response);
     }
@@ -137,7 +140,7 @@ public class RentalManager implements RentalService {
 
     private void updateCarState(int carId, CarStates status) {
         UpdateCarStateRequest updateCarStateRequest = new UpdateCarStateRequest();
-        updateCarStateRequest.setCarId(carId);
+        updateCarStateRequest.setId(carId);
         updateCarStateRequest.setCarStateName(status);
         this.carService.updateCarState(updateCarStateRequest);
 
@@ -150,30 +153,6 @@ public class RentalManager implements RentalService {
         this.carService.updateCarCity(updateCarCityRequest);
     }
 
-    private void createOrderedAdditionalService(int rentalId, List<Integer> additionalServicesId) {
-        CreateOrderedAdditionalServiceRequest createOrderedAdditionalServiceRequest = new CreateOrderedAdditionalServiceRequest();
-        for (int additionalServiceId : additionalServicesId) {
-            createOrderedAdditionalServiceRequest.setRentalId(rentalId);
-            createOrderedAdditionalServiceRequest.setAdditionalServiceId(additionalServiceId);
-            this.orderedAdditionalServiceService.add(createOrderedAdditionalServiceRequest);
-        }
-    }
 
 
 }
-
-
-//         RentalDto as = this.modelMapperService.forDto().map(result,RentalDto.class);
-//        for (OrderedAdditionalServiceDto integer : as.getOrderedAdditionalServices()) {
-//            integer.getAdditionalServiceDailyPrice();
-//        }
-
-/*        List<Integer> additionalservicesId = returnRentalRequest.getAdditionalServiceId();
-
-        checkIfRentalIdExists(returnRentalRequest.getId());
-        Rental result = this.rentalDao.getById(returnRentalRequest.getId());
-        this.rentalDao.save(result);*/
-
-//TODO: Araba durumu güncellemesi ve eğer teslim tarihinden geç getirdiyse (erken gelmesi durumunda fiyatlandırmada bir değişiklik olmuyor genelde araç kiralama şirketlerinde :) )
-// veya teslim edeceği şehirden başka bir şehire getirmiş ise bunların güncellenmesi gerekiyor ona göre de fiyat hesaplamaları yapılabilir.
-// (aynı şekilde eh hizmetlerden de fazla veya eksik alınmış ise additionalServicesid listesine eklenebilir)!

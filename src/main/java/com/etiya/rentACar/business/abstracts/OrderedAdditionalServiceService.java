@@ -16,5 +16,7 @@ public interface OrderedAdditionalServiceService {
     Result update(UpdateOrderedAdditionalServiceRequest updateOrderedAdditionalServiceRequest);
     Result delete(DeleteOrderedAdditionalServiceRequest deleteOrderedAdditionalServiceRequest);
 
+    void CreateOrderedAdditionalService(int rentalId, List<Integer> additionalServicesId );
+
     DataResult<List<ListOrderedAdditionalServiceDto>> getAll();
 }

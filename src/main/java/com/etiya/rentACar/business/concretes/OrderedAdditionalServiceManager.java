@@ -39,7 +39,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 
     @Override
     public Result update(UpdateOrderedAdditionalServiceRequest updateOrderedAdditionalServiceRequest) {
-        OrderedAdditionalService result = this.modelMapperService.forRequest().map(orderedAdditionalServiceDao, OrderedAdditionalService.class);
+        OrderedAdditionalService result = this.modelMapperService.forRequest().map(updateOrderedAdditionalServiceRequest, OrderedAdditionalService.class);
         this.orderedAdditionalServiceDao.save(result);
         return new SuccessResult(BusinessMessages.OrderedAdditionalServiceMessages.OREDERED_ADDITIONAL_SERVICE_UPDATED);
     }
@@ -52,10 +52,23 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
     }
 
     @Override
+    public void CreateOrderedAdditionalService(int rentalId, List<Integer> additionalServicesId) {
+        CreateOrderedAdditionalServiceRequest createOrderedAdditionalServiceRequest = new CreateOrderedAdditionalServiceRequest();
+        for (int additionalServiceId : additionalServicesId) {
+            createOrderedAdditionalServiceRequest.setRentalId(rentalId);
+            createOrderedAdditionalServiceRequest.setAdditionalServiceId(additionalServiceId);
+            this.add(createOrderedAdditionalServiceRequest);
+        }
+    }
+
+    @Override
     public DataResult<List<ListOrderedAdditionalServiceDto>> getAll() {
         List<OrderedAdditionalService> results = this.orderedAdditionalServiceDao.findAll();
         List<ListOrderedAdditionalServiceDto> response = results.stream().map(orderedAdditionalService -> modelMapperService.forDto().map(orderedAdditionalService, ListOrderedAdditionalServiceDto.class)).collect(Collectors.toList());
 
         return new SuccessDataResult<List<ListOrderedAdditionalServiceDto>>(response);
     }
+
+
+
 }
