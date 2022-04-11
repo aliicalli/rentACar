@@ -11,5 +11,5 @@ public class ListOrderedAdditionalServiceDto {
     private int id;
     private int rentalId;
     private String  additionalServiceName;
-    private int additionalServiceDailyPrice;
+    private double additionalServiceDailyPrice;
 }

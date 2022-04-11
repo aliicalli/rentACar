@@ -51,10 +51,13 @@ public class Rental {
     private Customer customer;
 
     @OneToMany(mappedBy = "rental")
-    private List<OrderedAdditionalService> orderedAdditionalServices;
+    private List<Invoice> invoices;
 
     @OneToMany(mappedBy = "rental")
-    private List<Bill> bills;
+    private  List<OrderedAdditionalService> orderedAdditionalServices;
+
+    @OneToOne(mappedBy = "rental")
+    private Payment payment;
 
 
 }

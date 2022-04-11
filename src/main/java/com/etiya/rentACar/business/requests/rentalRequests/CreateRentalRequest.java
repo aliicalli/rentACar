@@ -31,8 +31,12 @@ public class CreateRentalRequest {
     private int rentCityId;
     @NotNull
     private int returnCityId;
+    @JsonIgnore
+    private int afterRentKilometer;
 
-    private List<Integer> additionalServiceId;
+
+
+    //private List<Integer> additionalServiceId;
 
 
 

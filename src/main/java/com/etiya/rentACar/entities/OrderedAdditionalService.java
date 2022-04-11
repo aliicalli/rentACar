@@ -25,4 +25,5 @@ public class OrderedAdditionalService {
     @ManyToOne
     @JoinColumn(name = "additional_service_id")
     private AdditionalService additionalService;
+
 }

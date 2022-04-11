@@ -54,6 +54,11 @@ public class CustomerManager implements CustomerService {
         return new SuccessResult(BusinessMessages.CustomerMessages.CUSTOMER_DELETED);
     }
 
+    @Override
+    public DataResult<Customer> getById(int customerId) {
+        Customer result = this.customerDao.getById(customerId);
+        return new SuccessDataResult<Customer>(result);
+    }
 
 
     @Override

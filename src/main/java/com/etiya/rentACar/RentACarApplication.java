@@ -1,5 +1,6 @@
 package com.etiya.rentACar;
 
+import com.etiya.rentACar.core.OutServices.HalkBankPosService;
 import com.etiya.rentACar.core.crossCuttingConcerns.exceptionHandling.BusinessException;
 import com.etiya.rentACar.core.utilities.results.ErrorDataResult;
 import org.modelmapper.ModelMapper;
@@ -29,6 +30,11 @@ public class RentACarApplication {
     public ModelMapper getModelMapper() {
         return new ModelMapper();
     }
+
+    @Bean
+    public HalkBankPosService getHalkBankPosService(){return new HalkBankPosService();}
+
+
 
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)

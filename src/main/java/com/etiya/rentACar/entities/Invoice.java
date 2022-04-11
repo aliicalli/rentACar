@@ -11,15 +11,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "bills")
-public class Bill {
+@Table(name = "invoices")
+public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "bill_number")
-    private String billNumber;
+    @Column(name = "invoice_number")
+    private String invoiceNumber;
 
     @Column(name = "create_date")
     private LocalDate createDate;
@@ -43,6 +43,9 @@ public class Bill {
     @ManyToOne
     @JoinColumn(name = "rental_id")
     private Rental rental;
+
+    @OneToOne(mappedBy = "invoice")
+    private Payment payment;
 
 
 }

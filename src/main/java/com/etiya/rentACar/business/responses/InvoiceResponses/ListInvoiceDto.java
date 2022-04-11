@@ -1,4 +1,4 @@
-package com.etiya.rentACar.business.responses.billResponses;
+package com.etiya.rentACar.business.responses.InvoiceResponses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,14 +9,17 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BillDto {
+public class ListInvoiceDto {
+
     private int id;
-    private String billNumber;
-    private LocalDate rentalRentDate;
+    private String invoiceNumber;
     private LocalDate createDate;
-    private LocalDate rentalReturnDate;
     private double totalPrice;
     private int totalRentDay;
     private String customerFirstName;
     private String customerLastName;
+    private LocalDate rentalRentDate;
+    private LocalDate rentalReturnDate;
+
+
 }

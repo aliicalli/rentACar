@@ -7,6 +7,7 @@ import com.etiya.rentACar.business.responses.customerResponses.CustomerDto;
 import com.etiya.rentACar.business.responses.customerResponses.ListCustomerDto;
 import com.etiya.rentACar.core.utilities.results.DataResult;
 import com.etiya.rentACar.core.utilities.results.Result;
+import com.etiya.rentACar.entities.Customer;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public interface CustomerService {
     Result update(UpdateCustomerRequest updateCustomerRequest);
 
     Result delete(DeleteCustomerRequest deleteCustomerRequest);
+
+    DataResult<Customer> getById(int customerId);
 
     DataResult<List<ListCustomerDto>> getAll();
 }

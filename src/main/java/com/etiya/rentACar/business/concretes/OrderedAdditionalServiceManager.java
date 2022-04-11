@@ -6,6 +6,7 @@ import com.etiya.rentACar.business.requests.orderedAdditionalServiceRequest.Crea
 import com.etiya.rentACar.business.requests.orderedAdditionalServiceRequest.DeleteOrderedAdditionalServiceRequest;
 import com.etiya.rentACar.business.requests.orderedAdditionalServiceRequest.UpdateOrderedAdditionalServiceRequest;
 import com.etiya.rentACar.business.responses.orderedAdditionalServiceResponses.ListOrderedAdditionalServiceDto;
+import com.etiya.rentACar.business.responses.orderedAdditionalServiceResponses.OrderedAdditionalServiceDto;
 import com.etiya.rentACar.core.utilities.mapping.ModelMapperService;
 import com.etiya.rentACar.core.utilities.results.DataResult;
 import com.etiya.rentACar.core.utilities.results.Result;
@@ -49,6 +50,13 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
         int orderedAdditionalServiceId = deleteOrderedAdditionalServiceRequest.getId();
         this.orderedAdditionalServiceDao.deleteById(orderedAdditionalServiceId);
         return new SuccessResult(BusinessMessages.OrderedAdditionalServiceMessages.OREDERED_ADDITIONAL_SERVICE_DELETED);
+    }
+
+    @Override
+    public DataResult<List<ListOrderedAdditionalServiceDto>> findAllByRentalId(int id) {
+        List<OrderedAdditionalService> results = this.orderedAdditionalServiceDao.findAllByRentalId(id);
+        List<ListOrderedAdditionalServiceDto> response = results.stream().map(orderedAdditionalService -> this.modelMapperService.forDto().map(orderedAdditionalService,ListOrderedAdditionalServiceDto.class)).collect(Collectors.toList());
+        return new SuccessDataResult<List<ListOrderedAdditionalServiceDto>>(response);
     }
 
     @Override
